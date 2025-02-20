@@ -549,7 +549,7 @@ open_file_pilot :: proc()
 		lpClass = nil,
 		hkeyClass = nil,
 		dwHotKey = 0,
-		hMonitor = cast(HANDLE)active_monitor,
+		DUMMYUNIONNAME = { hMonitor=cast(HANDLE)active_monitor },
 		hProcess = nil,
 	}
 	
