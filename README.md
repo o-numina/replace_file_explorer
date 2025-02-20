@@ -22,3 +22,6 @@ This is because Task Manager runs with administrator
 priviliges. If winkey_filepilot is run as
 administrator, it will listen to WinKey + E even with
 Task Manager on top.
+
+### Odin
+[Compile code with Odin](https://odin-lang.org/docs/install/)
