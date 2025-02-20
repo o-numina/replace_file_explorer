@@ -25,3 +25,20 @@ Task Manager on top.
 
 ### Odin
 [Compile code with Odin](https://odin-lang.org/docs/install/)
+
+Code was compiled with
+
+	odin build . -out:winkey_filepilot.exe -subsystem:windows -vet-unused -vet-unused-variables -vet-style -vet-semicolon -vet-cast -vet-tabs
+
+Some windows functions might not be defined yet by win32:
+#### user32.odin:
+
+	UnregisterHotKey :: proc(hWnd: HWND, id: c.int) -> BOOL ---
+	GetWindowThreadProcessId :: proc(hWnd: HWND, lpdwProcessId: LPDWORD) -> DWORD ---
+#### shell32.odin:
+
+	ExtractIconW :: proc(hInst: HINSTANCE, pszExeFileName: LPCWSTR, nIconIndex: UINT) -> HICON ---
+
+#### ole32.odin:
+
+	CoCreateGuid :: proc(pguid: ^GUID) -> HRESULT ---
