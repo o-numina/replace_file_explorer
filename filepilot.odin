@@ -71,7 +71,7 @@ DISABLE_ID :: 72
 DEBUG_CHECKMARK : u32 = win32.MFS_UNCHECKED
 DISABLE_CHECKMARK : u32 = win32.MFS_UNCHECKED
 
-FILE_PILOT_DEBUG : string = "FPilot-debug"
+FILE_PILOT_DEBUG : string = "FPilot-dev"
 FILE_PILOT_RELEASE : string = "FPilot"
 FILE_PILOT_EXTRACT_ICON : string = "FPilot.exe"
 FILE_PILOT_PATH_STRING : string
@@ -717,14 +717,21 @@ create_system_tray_icon :: proc()
 	tip_string : []u8 = transmute([]u8)string("FilePilot Winkey + E")
 	tip : [128]u16
 	MultiByteToWideChar(CP_UTF8, MB_ERR_INVALID_CHARS,
-	raw_data(tip_string), cast(i32)len(tip_string),
-	raw_data(tip[:]), len(tip))
+		raw_data(tip_string), cast(i32)len(tip_string),
+		raw_data(tip[:]), len(tip))
 	info : [256]u16
 	info_title : [64]u16
 	
 	icon : HICON = ExtractIconW(INSTANCE, utf8_to_wstring(FILE_PILOT_EXTRACT_ICON), 0)
-	log.assert(icon != nil,
-		"Failed to ExtractIconW")
+	if icon == nil
+	{
+		icon : HICON = ExtractIconW(INSTANCE, utf8_to_wstring(FILE_PILOT_PATH_STRING), 0)
+		if icon == nil
+		{
+			icon : HICON = LoadIconA(nil, IDI_APPLICATION)
+			fmt.println("Failed to ExtractIconW")
+		}
+	}
 	
 	guid : GUID
 	win32.CoCreateGuid(&guid)
@@ -753,7 +760,7 @@ create_system_tray_icon :: proc()
 	
 	// Create systems tray menu
 	POPUP_MENU = CreatePopupMenu()
-	debug_string : string = "Debug"
+	debug_string : string = "Dev"
 	debug : [^]u16 = utf8_to_wstring(debug_string)
 	AppendMenuW(POPUP_MENU, MF_ENABLED | MF_STRING | DEBUG_CHECKMARK, DEBUG_ID, debug)
 	
@@ -779,7 +786,7 @@ USAGE : string :
   -debug-path %DEBUG_PATH%		: [optional] Overrides debug path
   -release-path %RELEASE_PATH%	: [optional] Overrides release path
   -working-directory			: [optional] Overrides the working directory of the launched process
-  -start-debug					: [optional] On startup WinKey + E will launch in debug
+  -start-dev					: [optional] On startup File Pilot will launch in the dev build
   -start-disabled				: [optional] On startup the winkey_filepilot will not launch filepilot on WinKey + E events
   -file-pilot-parameters		: [optional] Parameters to pass to FilePilot
   
@@ -848,7 +855,7 @@ os_args :: proc()
 					}
 				case "-file-pilot-parameters":
 					parameters = true
-				case "-start-debug":
+				case "-start-dev":
 					RELEASE = false
 				case "-start-disabled":
 					DISABLED = true
