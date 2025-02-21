@@ -725,7 +725,23 @@ create_system_tray_icon :: proc()
 	icon : HICON = ExtractIconW(INSTANCE, utf8_to_wstring(FILE_PILOT_EXTRACT_ICON), 0)
 	if icon == nil
 	{
-		icon : HICON = ExtractIconW(INSTANCE, utf8_to_wstring(FILE_PILOT_PATH_STRING), 0)
+		filepaths : []string =
+		{
+			fmt.tprintf("%s%s", FILE_PILOT_RELEASE, FILE_PILOT_EXTRACT_ICON),
+			fmt.tprintf("%s%s", FILE_PILOT_DEBUG, FILE_PILOT_EXTRACT_ICON),
+			fmt.tprintf("%s%s", FILE_PILOT_PATH_STRING, FILE_PILOT_EXTRACT_ICON),
+		}
+		
+		get_path: for path in filepaths
+		{
+			fmt.printfln("Trying ExtractIconW with path: %s", path)
+			if os.is_file(path)
+			{
+				icon = ExtractIconW(INSTANCE, utf8_to_wstring(path), 0)
+				break get_path
+			}	
+		}
+		
 		if icon == nil
 		{
 			icon : HICON = LoadIconA(nil, IDI_APPLICATION)
