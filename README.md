@@ -1,5 +1,5 @@
 # replace_file_explorer
-Replaces Windows key + E keybind to launch FilePilot
+Replaces Windows key + E keybind to launch [FilePilot](https://filepilot.tech/)
 
 ### Usage
 winkey_filepilot will register WinKey + E and listen for
