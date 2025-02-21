@@ -11,7 +11,7 @@ the systems tray.
 	-debug-path %DEBUG_PATH%	: [optional] Overrides debug path
 	-release-path %RELEASE_PATH%	: [optional] Overrides release path
 	-working-directory		: [optional] Overrides the working directory of the launched process
-	-start-debug			: [optional] On startup WinKey + E will launch in debug
+	-start-dev			: [optional] On startup FilePilot will run the dev build
 	-start-disabled			: [optional] On startup the winkey_filepilot will not launch filepilot on WinKey + E events
 	-file-pilot-parameters		: [optional] Parameters to pass to FilePilot
 	
